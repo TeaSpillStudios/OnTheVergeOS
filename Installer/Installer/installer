@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+function main {
+  local promptResult = $(prompt "UEFI or GPT?" "U/G")
+  local diskName = $(getDisk)
+  case $()
+}

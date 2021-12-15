@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+function prompt {
+  read -p "${1}: ${2}" result
+  echo $result
+}
+
+function getDisk {
+  disksAndPartitions=$( ls /dev/ )
+
+  promptResult=$(prompt "Which disk would you like to use? (P to print disks)" "/dev/")
+
+  case ${promptResult,,} in
+    p)
+      for disk in "${disksAndPartitions[@]}"
+      do
+        echo 
+
+}
