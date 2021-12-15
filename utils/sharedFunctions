@@ -6,14 +6,35 @@ function prompt {
 }
 
 function getDisk {
-  disksAndPartitions=$( ls /dev/ )
+  disksAndPartitions=$( ls /dev/sd* )
 
   promptResult=$(prompt "Which disk would you like to use? (P to print disks)" "/dev/")
 
   case ${promptResult,,} in
     p)
+      local lastShown=""
+
       for disk in "${disksAndPartitions[@]}"
       do
-        echo 
+        if [[ $lastShown != ${disk:5:3} ]]; then
+          echo ${disk:5:6}
+          lastShown=${disk:5:6}
+        fi
+      done;;
+    *)
+      local matches=false
 
+      for disk in "${disksAndPartitions[@]}"
+      do
+        if [[ $promptResult == ${disk:5:7} ]]; then
+          matches=false
+        fi
+      done
+
+      if $matches; then
+        echo $promptResult
+      else
+        echo "Incorrect disk name! Restarting."
+        getDisk
+      fi
 }
