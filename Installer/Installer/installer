@@ -1,7 +1,38 @@
 #!/usr/bin/env bash
 
+source ./utils/sharedFunctions
+source ./utils/formatTools
+
 function main {
-  local promptResult = $(prompt "UEFI or GPT?" "U/G")
-  local diskName = $(getDisk)
-  case $()
+  local promptResult=$(prompt "UEFI or GPT?" "U/g")
+  local diskName=$(getDisk)
+  case ${promptResult,,} in
+    u)
+      formatUEFI $diskName;;
+    "")
+      formatUEFI $diskName;;
+    g)
+      formatGPT $diskName;;
+    *)
+      echo Incorrect input value! Restarting.
+      main
+  esac
+
+  echo "Formatted disk!"
+
+  mkfs.fat -F32 "${diskName}1"
+  mkfs.ext4 "${diskName}2"
+
+  mount "${diskName}2 /mnt"
+
+  pacstrap /mnt base linux linux-firmware vim
+
+  mkdir -p /mnt/boot/efi
+
+  genfstab -U /mnt > /mnt/etc/fstab
+
+  continueInChroot
+
+  returnResult=$(prompt "Please remove installation media and press RETURN" "")
+
 }
