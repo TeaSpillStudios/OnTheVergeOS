@@ -385,11 +385,17 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "d",     function () awful.util.spawn("rofi -show drun") end,
               {description = "run prompt", group = "launcher"}),
 
+    awful.key( { modkey },           "e",     function () awful.util.spawn("rofi -show window") end, 
+              {description = "Window prompt", group = "launcher"}),
+
     awful.key({ modkey, "Shift" },   "p",     function () awful.util.spawn("poweroff") end,
               {description = "Powerr off", group = "client" }),
 
     awful.key({ modkey },            "i",     function () awful.util.spawn("flameshot gui") end,
               {description = "take screenshot", group = "client"}),
+
+    awful.key({ modkey, "Control" },            "y",     function() awful.util.spawn("rebirth") end,
+              {description = "Rebirths in weight lifting simulator", group = "client"}),
 
     awful.key({ modkey }, "x",
               function ()
